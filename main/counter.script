@@ -1,0 +1,94 @@
+touch = hash("touch")
+
+function counter(self)
+	self.table ={}
+	local pos
+	local cross_id
+	local nought_id
+	local grid_id
+	self.grid_table ={ 
+
+		{grid_1=0,grid_2=0,grid_3=0},
+		{grid_4=0,grid_5=0,grid_6=0},
+		{grid_7=0,grid_8=0,grid_9=0},
+	}
+	self.spawn_table = {}
+
+	
+	for y = 260,380,120 do
+		for x = 420,540,120 do
+			pos = vmath.vector3(x,y,0)
+			grid_id = factory.create("#tile_spawner", pos)
+			table.insert(self.spawn_table, grid_id)
+		end
+	end
+
+	
+end
+		
+	
+
+
+function init(self)
+	counter(self)
+	self.count=0
+	self.counter=0
+	
+	
+	msg.post(".", "acquire_input_focus")
+end
+
+function final(self)
+
+end
+
+function update(self, dt)
+	
+end
+
+function fixed_update(self, dt)
+	-- This function is only called if 'Use Fixed Timestep' is enabled in the Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	
+	
+end
+
+function on_input(self, action_id, action)
+	
+	pos = go.get_position()
+	if action_id == touch and action.pressed and self.count == 0 and self.counter <9 and  message_id == hash("collision_response")then
+		cross_id = factory.create("#nought_spawner",pos)
+		
+		self.counter = self.counter+1
+		self.count = 1
+
+		print("testing")
+
+
+
+
+		print("testing")
+	elseif action_id == touch and action.pressed  and self.counter <9 and self.count ==1 and message_id == hash("collision_response")  then
+		cross_id = factory.create("#cross_spawner",pos)
+		table.insert(self.table, nought_id)
+		self.counter = self.counter+1
+		self.count = 0
+
+		print("testing")
+
+	end
+	
+	
+	
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
